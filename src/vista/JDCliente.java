@@ -604,8 +604,8 @@ public class JDCliente extends javax.swing.JDialog {
 
             if (rs.next()) {
                 txtIdcliente.setText(rs.getString("idCliente"));
-                txtApellido.setText(rs.getString("apellido"));
-                txtNombre.setText(rs.getString("nombre"));
+                txtApellido.setText(rs.getString("apellidos"));
+                txtNombre.setText(rs.getString("nombres"));
                 txtDni.setText(rs.getString("dni"));
                 txtCelular.setText(rs.getString("celular"));
                 txtDireccion.setText(rs.getString("direccion"));
