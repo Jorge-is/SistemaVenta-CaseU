@@ -14,7 +14,7 @@ public class Ctrl_Cliente {
     
     public boolean guardar(Cliente objeto) {
         boolean respuesta = false;
-        String sql = "INSERT INTO cliente(idCliente,apellido, nombre,dni,celular,direccion) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO cliente(idCliente, apellidos, nombres, dni, celular, direccion) VALUES(?,?,?,?,?,?)";
         
         try {
             cn = Conexion.conectar();
@@ -41,7 +41,7 @@ public class Ctrl_Cliente {
     public boolean actualizar(Cliente objeto, int idCliente) {
         boolean respuesta = false;
         cn = Conexion.conectar();
-        String sql = "UPDATE cliente SET apellido=?,nombre=?,dni=?,celular=?,direccion=? WHERE idCliente ='" + idCliente + "'";
+        String sql = "UPDATE cliente SET apellidos=?, nombres=?, dni=?, celular=?, direccion=? WHERE idCliente ='" + idCliente + "'";
         
         try {
             ps = cn.prepareStatement(sql);
@@ -96,8 +96,8 @@ public class Ctrl_Cliente {
 
             while (rs.next()) {
                 registro[0] = rs.getString("idCliente");
-                registro[1] = rs.getString("apellido");
-                registro[2] = rs.getString("nombre");
+                registro[1] = rs.getString("apellidos");
+                registro[2] = rs.getString("nombres");
                 registro[3] = rs.getString("dni");
                 registro[4] = rs.getString("celular");
                 registro[5] = rs.getString("direccion");
