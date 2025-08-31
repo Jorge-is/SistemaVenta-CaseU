@@ -14,7 +14,7 @@ public class Ctrl_Producto {
 
     public boolean guardar(Producto objeto) {
         boolean respuesta = false;
-        String sql = "INSERT INTO producto (idProducto,nombre, variante,iphone,precio,stock,descripcion) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO producto (idProducto, nombre, variante, iphone, precio, cantidad, descripcion) VALUES (?,?,?,?,?,?,?)";
         try {
             cn = Conexion.conectar();
             ps = cn.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class Ctrl_Producto {
 
     public boolean actualizar(Producto objeto, int idProducto) {
         boolean respuesta = false;
-        String sql = "UPDATE producto SET nombre=?,variante=?,iphone=?,precio=?,stock=?,descripcion=? WHERE idProducto='" + idProducto + "'";
+        String sql = "UPDATE producto SET nombre=?,variante=?,iphone=?,precio=?,cantidad=?,descripcion=? WHERE idProducto='" + idProducto + "'";
         cn = Conexion.conectar();
         
         try {
@@ -115,7 +115,7 @@ public class Ctrl_Producto {
     public DefaultTableModel buscar(String buscar) {
         cn = Conexion.conectar();
         DefaultTableModel model;
-        String[] titulos = {"ID","Nombre", "Variante", "iPhone", "Precio", "Stock", "Descripcion"};
+        String[] titulos = {"ID","Nombre", "Variante", "iPhone", "Precio", "Cantidad", "Descripcion"};
 
         String[] registro = new String[7];
         model = new DefaultTableModel(null, titulos);
@@ -134,7 +134,7 @@ public class Ctrl_Producto {
                 registro[2] = rs.getString("variante");
                 registro[3] = rs.getString("iphone");
                 registro[4] = rs.getString("precio");
-                registro[5] = rs.getString("stock");
+                registro[5] = rs.getString("cantidad");
                 registro[6] = rs.getString("descripcion");
 
                 //totalregistros += 1;

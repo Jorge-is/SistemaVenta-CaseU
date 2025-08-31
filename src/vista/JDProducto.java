@@ -590,7 +590,7 @@ public class JDProducto extends javax.swing.JDialog {
             model.addColumn("Variante");
             model.addColumn("iPhone");
             model.addColumn("Precio");
-            model.addColumn("Stock");
+            model.addColumn("Cantidad");
             model.addColumn("Descripción");
 
             while (rs.next()) {
@@ -632,7 +632,7 @@ public class JDProducto extends javax.swing.JDialog {
                 cboxVariante.setSelectedItem(rs.getString("variante"));
                 cboxIphone.setSelectedItem(rs.getString("iphone"));
                 txtPrecio.setText(rs.getString("precio"));
-                txtStock.setText(rs.getString("stock"));
+                txtStock.setText(rs.getString("cantidad"));
                 txtDescripcion.setText(rs.getString("descripcion"));
             }
             cn.close();

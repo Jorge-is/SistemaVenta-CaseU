@@ -42,7 +42,7 @@ public class VentaPDF {
             st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                nombreCliente = rs.getString("apellido") + " " + rs.getString("nombre");
+                nombreCliente = rs.getString("apellidos") + " " + rs.getString("nombres");
                 dniCliente = rs.getString("dni");
                 celularCliente = rs.getString("celular");
                 direccionCliente = rs.getString("direccion");

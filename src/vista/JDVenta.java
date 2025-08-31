@@ -486,7 +486,7 @@ public class JDVenta extends javax.swing.JDialog {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String cliente = txtBuscar.getText().trim();
         Connection cn = Conexion.conectar();
-        String sql = "SELECT apellido, nombre FROM cliente WHERE dni = '" + cliente + "'";
+        String sql = "SELECT apellidos, nombres FROM cliente WHERE dni = '" + cliente + "'";
         Statement st;
         ResultSet rs;
         try {
@@ -494,7 +494,7 @@ public class JDVenta extends javax.swing.JDialog {
             rs = st.executeQuery(sql);
 
             if (rs.next()) {
-                cboxCliente.setSelectedItem(rs.getString("apellido") + " " + rs.getString("nombre"));
+                cboxCliente.setSelectedItem(rs.getString("apellidos") + " " + rs.getString("nombres"));
             } else {
                 cboxCliente.setSelectedItem("Seleccione cliente:");
                 JOptionPane.showMessageDialog(null, "DNI del cliente es incorrecto o no fue encontrada");
@@ -727,7 +727,7 @@ public class JDVenta extends javax.swing.JDialog {
             cboxCliente.removeAllItems();
             cboxCliente.addItem("Seleccione cliente:");
             while (rs.next()) {
-                cboxCliente.addItem(rs.getString("apellido") + " " + rs.getString("nombre"));
+                cboxCliente.addItem(rs.getString("apellidos") + " " + rs.getString("nombres"));
             }
             cn.close();
         } catch (SQLException e) {
@@ -787,7 +787,7 @@ public class JDVenta extends javax.swing.JDialog {
                 nombre = rs.getString("nombre");
                 variante = rs.getString("variante");
                 iphone = rs.getString("iphone");
-                cantidadBBDD = rs.getInt("stock");
+                cantidadBBDD = rs.getInt("cantidad");
                 preUnitario = rs.getDouble("precio");
                 this.CalcularIgv(preUnitario);
             }
@@ -830,7 +830,7 @@ public class JDVenta extends javax.swing.JDialog {
 
     private void ObtenerIdCliente() {
         try {
-            String sql = "SELECT * FROM cliente WHERE CONCAT(apellido,' ',nombre) = '" + this.cboxCliente.getSelectedItem() + "'";
+            String sql = "SELECT * FROM cliente WHERE CONCAT(apellidos,' ',nombres) = '" + this.cboxCliente.getSelectedItem() + "'";
             Connection cn = Conexion.conectar();
             Statement st;
             st = cn.createStatement();
@@ -850,13 +850,13 @@ public class JDVenta extends javax.swing.JDialog {
         int cantidadProductoBD = 0;
         try {
             Connection cn = Conexion.conectar();
-            String sql = "SELECT idProducto, stock FROM producto WHERE idProducto = '" + idProducto + "' ";
+            String sql = "SELECT idProducto, cantidad FROM producto WHERE idProducto = '" + idProducto + "' ";
             Statement st;
             st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
 
             while (rs.next()) {
-                cantidadProductoBD = rs.getInt("stock");
+                cantidadProductoBD = rs.getInt("cantidad");
             }
             cn.close();
         } catch (SQLException e) {
@@ -865,7 +865,7 @@ public class JDVenta extends javax.swing.JDialog {
 
         try {
             Connection cn = Conexion.conectar();
-            PreparedStatement ps = cn.prepareStatement("UPDATE producto SET stock=? WHERE idProducto = '" + idProducto + "' ");
+            PreparedStatement ps = cn.prepareStatement("UPDATE producto SET cantidad=? WHERE idProducto = '" + idProducto + "' ");
             int nuevoStock = cantidadProductoBD - cantidad;
             ps.setInt(1, nuevoStock);
             if (ps.executeUpdate() > 0) {
