@@ -14,11 +14,14 @@ Aplicación nativa de escritorio desarrollada con Java Swing para la administrac
 * **Patrón de Diseño:** Layered Architecture / DAO Pattern.
 
 ## 🚀 Instalación y uso
-1. Clona el repositorio
-2. Importa el proyecto en NetBeans o tu IDE preferido.
-3. Configura la base de datos `sistemaventa` en tu motor de MySQL local y ejecuta el archivo [sistemaventa.sql](sistemaventa.sql) para importar las tablas y datos.
-4. Ajusta la clase de conexión en `src/conexion/Conexion.java` si el usuario de tu servidor MySQL no es `root` o si usas contraseña.
-5. Ejecuta la clase `Login` desde `src/vista/Login.java`.
+1. **Clona el repositorio**
+   ```bash
+   git clone https://github.com/Jorge-is/SistemaVenta-CaseU.git
+   ```
+3. **Importa el proyecto en NetBeans o tu IDE preferido.**
+4. Configura la base de datos `sistemaventa` en tu motor de MySQL local y ejecuta el archivo [sistemaventa.sql](sistemaventa.sql) para importar las tablas y datos.
+5. Ajusta la clase de conexión en `src/conexion/Conexion.java` si el usuario de tu servidor MySQL no es `root` o si usas contraseña.
+6. Ejecuta la clase `Login` desde `src/vista/Login.java`.
 
 ### Credenciales de prueba
 * **Usuario:** Admin
