@@ -1,218 +1,31 @@
-```sql
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 01-09-2025 a las 01:15:25
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+# Sistema de Ventas "Case-U"
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+![Banner o Screenshot del Proyecto](src/imagenes/login-caseu.png)
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+## 📝 Descripción Profesional
+Aplicación nativa de escritorio desarrollada con Java Swing para la administración operativa de un negocio retail (Case-U). El sistema gestiona las operaciones de caja a través de una arquitectura transaccional utilizando JDBC para comunicarse con una base de datos MySQL relacional. Incorpora autenticación de usuarios basada en roles, operaciones CRUD para el inventario de productos y una base de clientes, y un módulo robusto de procesamiento de ventas que genera facturación dinámica y reportes exportables en formato PDF mediante la librería iText.
 
---
--- Base de datos: `sistemaventa`
---
+## 🛠️ Stack de Tecnologías
+* **Lenguaje:** Java 8+ / Programación Orientada a Objetos (POO).
+* **Frontend / UI:** Java Swing.
+* **Base de Datos / Backend:** MySQL Relacional (XAMPP), JDBC API.
+* **Librerías Adicionales:** iTextPDF (Generación de reportería y facturas fiscales).
+* **Patrón de Diseño:** Layered Architecture / DAO Pattern.
 
--- --------------------------------------------------------
+## 🚀 Instalación y uso
+1. Clona el repositorio
+2. Importa el proyecto en NetBeans o tu IDE preferido.
+3. Configura la base de datos `sistemaventa` en tu motor de MySQL local y ejecuta el archivo [sistemaventa.sql](sistemaventa.sql) para importar las tablas y datos.
+4. Ajusta la clase de conexión en `src/conexion/Conexion.java` si el usuario de tu servidor MySQL no es `root` o si usas contraseña.
+5. Ejecuta la clase `Login` desde `src/vista/Login.java`.
 
---
--- Estructura de tabla para la tabla `cliente`
---
+### Credenciales de prueba
+* **Usuario:** Admin
+* **Contraseña:** 1234
 
-CREATE TABLE `cliente` (
-  `idCliente` int(11) NOT NULL,
-  `apellidos` varchar(100) NOT NULL,
-  `nombres` varchar(100) NOT NULL,
-  `dni` varchar(8) NOT NULL,
-  `celular` varchar(9) NOT NULL,
-  `direccion` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+## 💡 Aprendizaje obtenido (Reflexión)
+*Este proyecto fue un hito fundamental en mi formación como desarrollador, ya que me permitió aterrizar conceptos teóricos de POO en software del mundo real. A través de este proceso, comprendí los desafíos de acoplar la interfaz gráfica con la base de datos en una capa separada, la importancia en el manejo unificado de excepciones usando librerías JDBC, y la integración de librerías de terceros (iText) en un entorno de negocio.*
 
---
--- Volcado de datos para la tabla `cliente`
---
-
-INSERT INTO `cliente` (`idCliente`, `apellidos`, `nombres`, `dni`, `celular`, `direccion`) VALUES
-(6, 'Sanchez', 'Manuel', '78452136', '945123645', 'Av. Los Pinos 123'),
-(7, 'Luna', 'Daniela', '74512648', '941257840', 'Jr. Las Flores 1245');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `detalle_venta`
---
-
-CREATE TABLE `detalle_venta` (
-  `idDetalle` int(11) NOT NULL,
-  `codVenta` int(11) NOT NULL,
-  `idProducto` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `preUnitario` double(10,2) NOT NULL,
-  `subTotal` double(10,2) NOT NULL,
-  `descuento` double(10,2) NOT NULL,
-  `igv` double(10,2) NOT NULL,
-  `totalPagar` double(10,2) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `detalle_venta`
---
-
-INSERT INTO `detalle_venta` (`idDetalle`, `codVenta`, `idProducto`, `cantidad`, `preUnitario`, `subTotal`, `descuento`, `igv`, `totalPagar`) VALUES
-(1, 1, 3, 2, 49.00, 98.00, 0.00, 17.64, 115.64),
-(2, 2, 1, 1, 49.00, 49.00, 0.00, 8.82, 57.82);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `producto`
---
-
-CREATE TABLE `producto` (
-  `idProducto` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `variante` varchar(50) NOT NULL,
-  `iphone` varchar(50) NOT NULL,
-  `precio` double(10,2) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `descripcion` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `producto`
---
-
-INSERT INTO `producto` (`idProducto`, `nombre`, `variante`, `iphone`, `precio`, `cantidad`, `descripcion`) VALUES
-(1, 'Mate', 'Negro', 'Iphone 13 Pro Max', 49.00, 0, ''),
-(2, '360', 'Negro', 'Iphone 11 Pro Max', 49.00, 1, 'Diseño: ANIME16'),
-(3, 'Mirror', 'Plata', 'Iphone 11 Pro Max', 49.00, 3, '');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuario`
---
-
-CREATE TABLE `usuario` (
-  `idUsuario` int(11) NOT NULL,
-  `apellidos` varchar(100) NOT NULL,
-  `nombres` varchar(100) NOT NULL,
-  `dni` char(8) NOT NULL,
-  `celular` varchar(9) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
-  `categoria` varchar(100) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
-  `clave` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`idUsuario`, `apellidos`, `nombres`, `dni`, `celular`, `direccion`, `categoria`, `usuario`, `clave`) VALUES
-(1, 'Flores', 'Jorge', '85126943', '920512860', 'Av. Santa Rosa 950', 'Administrador', 'Admin', '1234'),
-(3, 'Vasquez', 'Mario', '45231680', '984215643', 'Av. Los Bosques 451', 'Administrador', 'Mario', '1234'),
-(4, 'López', 'Karen', '45210681', '984125460', 'Jr. Perú 1452', 'Vendedor', 'Karen', '1234');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `venta`
---
-
-CREATE TABLE `venta` (
-  `codVenta` int(11) NOT NULL,
-  `idCliente` int(11) NOT NULL,
-  `valorPagar` double(10,2) NOT NULL,
-  `fechaVenta` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `venta`
---
-
-INSERT INTO `venta` (`codVenta`, `idCliente`, `valorPagar`, `fechaVenta`) VALUES
-(1, 6, 115.64, '2025-08-31'),
-(2, 7, 57.82, '2025-08-31');
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `cliente`
---
-ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`idCliente`);
-
---
--- Indices de la tabla `detalle_venta`
---
-ALTER TABLE `detalle_venta`
-  ADD PRIMARY KEY (`idDetalle`);
-
---
--- Indices de la tabla `producto`
---
-ALTER TABLE `producto`
-  ADD PRIMARY KEY (`idProducto`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`idUsuario`);
-
---
--- Indices de la tabla `venta`
---
-ALTER TABLE `venta`
-  ADD PRIMARY KEY (`codVenta`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `cliente`
---
-ALTER TABLE `cliente`
-  MODIFY `idCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `detalle_venta`
---
-ALTER TABLE `detalle_venta`
-  MODIFY `idDetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `producto`
---
-ALTER TABLE `producto`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `venta`
---
-ALTER TABLE `venta`
-  MODIFY `codVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+## 🔖 Tags / Palabras clave
+`Java`, `Desktop Application`, `MySQL`, `JDBC`, `CRUD`, `Software Architecture`, `Swing`, `PDF Generation`
