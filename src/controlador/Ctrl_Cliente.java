@@ -1,4 +1,4 @@
- package controlador;
+package controlador;
 
 import conexion.Conexion;
 import datos.Cliente;
@@ -7,45 +7,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Ctrl_Cliente {
-    
-    Connection cn;
-    PreparedStatement ps;
 
-    
     public boolean guardar(Cliente objeto) {
         boolean respuesta = false;
-        String sql = "INSERT INTO cliente(idCliente, apellidos, nombres, dni, celular, direccion) VALUES(?,?,?,?,?,?)";
-        
-        try {
-            cn = Conexion.conectar();
-            ps = cn.prepareStatement(sql);
-            
-            ps.setInt(1, 0);
-            ps.setString(2, objeto.getApellido());
-            ps.setString(3, objeto.getNombre());
-            ps.setString(4, objeto.getDni());
-            ps.setString(5, objeto.getCelular());
-            ps.setString(6, objeto.getDireccion());
-            
-            if (ps.executeUpdate() > 0) {
-                respuesta = true;
-            }
-            cn.close();
-            
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error al guardar cliente " + e);
-        }
-        return respuesta;
-    }   
-    
-    public boolean actualizar(Cliente objeto, int idCliente) {
-        boolean respuesta = false;
-        cn = Conexion.conectar();
-        String sql = "UPDATE cliente SET apellidos=?, nombres=?, dni=?, celular=?, direccion=? WHERE idCliente ='" + idCliente + "'";
-        
-        try {
-            ps = cn.prepareStatement(sql);
-            
+        String sql = "INSERT INTO cliente(apellidos, nombres, dni, celular, direccion) VALUES(?, ?, ?, ?, ?)";
+
+        try (Connection cn = Conexion.conectar();
+                PreparedStatement ps = cn.prepareStatement(sql)) {
+
             ps.setString(1, objeto.getApellido());
             ps.setString(2, objeto.getNombre());
             ps.setString(3, objeto.getDni());
@@ -55,59 +24,81 @@ public class Ctrl_Cliente {
             if (ps.executeUpdate() > 0) {
                 respuesta = true;
             }
-            cn.close();           
         } catch (SQLException e) {
-            System.out.println("Error al actualizar cliente " + e);
+            JOptionPane.showMessageDialog(null, "Error al guardar cliente: " + e.getMessage());
         }
         return respuesta;
     }
-    
-    public boolean eliminar(int idCliente) {
+
+    public boolean actualizar(Cliente objeto, int idCliente) {
         boolean respuesta = false;
-        cn = Conexion.conectar();
-        String sql = "DELETE FROM cliente WHERE idCliente ='" + idCliente + "'";
-        try {
-            ps = cn.prepareStatement(sql);            
-            ps.executeUpdate();
+        String sql = "UPDATE cliente SET apellidos=?, nombres=?, dni=?, celular=?, direccion=? WHERE idCliente = ?";
+
+        try (Connection cn = Conexion.conectar();
+                PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setString(1, objeto.getApellido());
+            ps.setString(2, objeto.getNombre());
+            ps.setString(3, objeto.getDni());
+            ps.setString(4, objeto.getCelular());
+            ps.setString(5, objeto.getDireccion());
+            ps.setInt(6, idCliente);
 
             if (ps.executeUpdate() > 0) {
                 respuesta = true;
             }
-            cn.close();           
         } catch (SQLException e) {
-            System.out.println("Error al eliminar cliente " + e);
+            System.out.println("Error al actualizar cliente: " + e.getMessage());
         }
         return respuesta;
     }
-      
-    public DefaultTableModel buscar(String buscar) {
-        cn = Conexion.conectar();
-        DefaultTableModel model;
-        String[] titulos = {"ID", "Apellido", "Nombre", "Dni", "Celular", "Direccion"};
 
-        String[] registro = new String[6];
+    public boolean eliminar(int idCliente) {
+        boolean respuesta = false;
+        String sql = "DELETE FROM cliente WHERE idCliente = ?";
+
+        try (Connection cn = Conexion.conectar();
+                PreparedStatement ps = cn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCliente);
+
+            if (ps.executeUpdate() > 0) {
+                respuesta = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar cliente: " + e.getMessage());
+        }
+        return respuesta;
+    }
+
+    public DefaultTableModel buscar(String buscar) {
+        DefaultTableModel model;
+        String[] titulos = { "ID", "Apellido", "Nombre", "Dni", "Celular", "Direccion" };
         model = new DefaultTableModel(null, titulos);
 
-        String sql = "SELECT * FROM cliente WHERE dni LIKE '%" + buscar + "%' ORDER BY idCliente";
+        String sql = "SELECT * FROM cliente WHERE dni LIKE ? ORDER BY idCliente";
 
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Connection cn = Conexion.conectar();
+                PreparedStatement ps = cn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                registro[0] = rs.getString("idCliente");
-                registro[1] = rs.getString("apellidos");
-                registro[2] = rs.getString("nombres");
-                registro[3] = rs.getString("dni");
-                registro[4] = rs.getString("celular");
-                registro[5] = rs.getString("direccion");
+            ps.setString(1, "%" + buscar + "%");
 
-                model.addRow(registro);
+            try (ResultSet rs = ps.executeQuery()) {
+                String[] registro = new String[6];
+                while (rs.next()) {
+                    registro[0] = rs.getString("idCliente");
+                    registro[1] = rs.getString("apellidos");
+                    registro[2] = rs.getString("nombres");
+                    registro[3] = rs.getString("dni");
+                    registro[4] = rs.getString("celular");
+                    registro[5] = rs.getString("direccion");
+
+                    model.addRow(registro);
+                }
             }
-            cn.close();
             return model;
         } catch (SQLException e) {
-            System.out.println("Error al mostrar cliente " + e);
+            System.out.println("Error al mostrar cliente: " + e.getMessage());
             return null;
         }
     }
